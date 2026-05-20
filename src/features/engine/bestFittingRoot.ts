@@ -147,11 +147,12 @@ export function localRootR2(tree: Tree, tipData: any) {
   var tipHeights: number[] = tree.getRTTDist();
 
   var dates = tipNames.map(e => tipData[e].date)
-  var desc0: string[] = tree.getClade(tree.root.children[0]).getTipLabels();
+  var desc0: Set<string> = new Set(tree.getClade(tree.root.children[0]).getTipLabels());
 
   var indicator: number[] = [];
   for (let i = 0; i < tipNames.length; i++) {
-    desc0.includes(tipNames[i]) ? indicator.push(1) : indicator.push(0);
+    // Set.has() is O(1) in V8, SpiderMonkey, and JavaScriptCore (all use hash tables)
+    desc0.has(tipNames[i]) ? indicator.push(1) : indicator.push(0);
   }
 
   let bl = tree.root.children.map(
@@ -233,11 +234,12 @@ export function localRootRMS(tree: Tree, tipData: any) {
   var tipHeights: number[] = tree.getRTTDist();
   var t = tipNames.map(e => tipData[e].date)
 
-  var leftBranchTips: string[] = tree.getClade(tree.root.children[0]).getTipLabels();
+  var leftBranchTips: Set<string> = new Set(tree.getClade(tree.root.children[0]).getTipLabels());
   var c: number[] = [];
   for (let i = 0; i < tipNames.length; i++) {
-    leftBranchTips.includes(tipNames[i]) ? c.push(0) : c.push(1);
-    //leftBranchTips.includes(tipNames[i]) ? c.push(1) : c.push(0);
+    // Set.has() is O(1) in V8, SpiderMonkey, and JavaScriptCore (all use hash tables)
+    leftBranchTips.has(tipNames[i]) ? c.push(0) : c.push(1);
+    //leftBranchTips.has(tipNames[i]) ? c.push(1) : c.push(0);
   }
 
   let bl = tree.root.children.map(
