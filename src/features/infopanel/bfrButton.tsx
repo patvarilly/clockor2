@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { setCurrentData, selectCurrentData, selectData, selectBestFittingRootData, setMode, selectMode } from '../regression/regressionSlice';
 import { setBestFittingRootData } from "../regression/regressionSlice";
 import { selectSource, setBestFittingRoot, setCurrentTree, selectTipData, selectBestFittingRoot } from '../tree/treeSlice';
-import { globalRootParallel } from "../engine/bestFittingRoot";
+import { globalRootLinear } from "../engine/bestFittingRootLinear";
 import { regression } from "../engine/core";
 import { readNewick } from "phylojs";
 import { addNotification } from "../notifications/notificationsSlice";
@@ -75,7 +75,7 @@ export function BFRButton() {
       setCalculating(true)
 
       var dates = sourceData.baseClock.x;
-      globalRootParallel(sourceNwk, dates, tipData, bfrMethod).then(
+      globalRootLinear(sourceNwk, dates, tipData, bfrMethod).then(
         (nwk: string) => {
 
           let newBFRState = {
